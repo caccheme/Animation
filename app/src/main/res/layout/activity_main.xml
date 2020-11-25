@@ -1,20 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.animation.MainActivity">
 
     <ImageView
-        android:id="@+id/faceIcon"
-        android:layout_width="@dimen/icon_size"
-        android:layout_height="@dimen/icon_size"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:src="@drawable/ic_face"
-        app:tint="@color/colorPrimary"
-        android:contentDescription="@string/face_icon" />
+        android:id="@+id/animation"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/linearLayout"
+        android:contentDescription="@string/animation" />
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -28,8 +24,18 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:onClick="onButtonClick"
-            android:text="@string/animate" />
+            android:onClick="onStartBtnClick"
+            android:text="@string/start"
+            tools:ignore="ButtonStyle" />
+
+        <Button
+            android:id="@+id/btnClear"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="onStopBtnClick"
+            android:text="@string/stop"
+            tools:ignore="ButtonStyle" />
     </LinearLayout>
 
 </RelativeLayout>

@@ -2,4 +2,7 @@
     <string name="app_name">Animation</string>
     <string name="animate">animate</string>
     <string name="face_icon">face icon</string>
+    <string name="stop">Stop</string>
+    <string name="start">Start</string>
+    <string name="animation">animation</string>
 </resources>
