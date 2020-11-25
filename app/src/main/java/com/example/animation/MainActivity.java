@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
         imageView.setBackgroundResource(R.drawable.monkey_animation);
 
         monkeyAnimation = (AnimationDrawable) imageView.getBackground();
+        monkeyAnimation.setOneShot(true);
     }
 
     public void onStartBtnClick(View v) {
@@ -34,10 +35,6 @@ public class MainActivity extends AppCompatActivity {
             monkeyAnimation.stop();
         }
         monkeyAnimation.start();
-    }
-
-    public void onStopBtnClick(View v) {
-        monkeyAnimation.stop();
     }
 
 }
