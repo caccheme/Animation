@@ -1,40 +1,40 @@
 package com.example.animation;
 
-import android.animation.Animator;
-import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
+import android.widget.ScrollView;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ImageView imageView;
-    private AnimationDrawable monkeyAnimation;
+    private ScrollView mScroll;
+    private TextView mLog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        imageView = findViewById(R.id.animation);
-        if (imageView == null) throw new AssertionError();
+//      Initialize the logging components
+        mScroll = findViewById(R.id.scrollLog);
+        mLog = findViewById(R.id.tvLog);
+        mLog.setText("");
 
-        imageView.setVisibility(View.INVISIBLE);
-        imageView.setBackgroundResource(R.drawable.monkey_animation);
-
-        monkeyAnimation = (AnimationDrawable) imageView.getBackground();
-        monkeyAnimation.setOneShot(true);
     }
 
-    public void onStartBtnClick(View v) {
-        imageView.setVisibility(View.VISIBLE);
-        if (monkeyAnimation.isRunning()) {
-            monkeyAnimation.stop();
-        }
-        monkeyAnimation.start();
+    public void onRunBtnClick(View v) {
+        displayMessage("Running code!");
     }
 
+    public void onClearBtnClick(View v) {
+        mLog.setText("");
+        mScroll.scrollTo(0, mScroll.getBottom());
+    }
+
+    public void displayMessage(String message) {
+        mLog.append(message + "\n");
+        mScroll.scrollTo(0, mScroll.getBottom());
+    }
 }
