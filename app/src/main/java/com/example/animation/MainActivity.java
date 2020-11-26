@@ -1,5 +1,6 @@
 package com.example.animation;
 
+import android.animation.ValueAnimator;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ScrollView;
@@ -25,7 +26,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onRunBtnClick(View v) {
-        displayMessage("Running code!");
+
+        ValueAnimator animator = ValueAnimator.ofFloat(1f, 20f)
+        .setDuration(2000);
+        animator.addUpdateListener(animation -> displayMessage("timestamp: " + animation.getCurrentPlayTime() + ", value: " +
+                animation.getAnimatedValue()));
+//        animator.setRepeatCount(ValueAnimator.INFINITE);
+        animator.setRepeatCount(2);
+        animator.setRepeatMode(ValueAnimator.REVERSE);
+        animator.start();
+
     }
 
     public void onClearBtnClick(View v) {
