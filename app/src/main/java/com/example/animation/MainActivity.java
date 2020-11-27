@@ -4,6 +4,7 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.AnticipateOvershootInterpolator;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -33,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
         ObjectAnimator animator = ObjectAnimator.ofFloat(
                 imageView, "y", 0, targetY)
                 .setDuration(1000);
-        animator.setInterpolator(new LinearInterpolator());
+        animator.setInterpolator(new AnticipateOvershootInterpolator());
         animator.start();
 
     }
