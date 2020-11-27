@@ -24,7 +24,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void onButtonClick(View v) {
+        //set the bottom of the animation, so the bottom of the animation
+        //lands at the bottom of the screen, don't want off the screen
+        int screenHeight = canvas.getHeight();
+        int targetY = screenHeight - imageView.getHeight();
 
+        ObjectAnimator animator = ObjectAnimator.ofFloat(
+                imageView, "y", 0, targetY)
+                .setDuration(1000);
+        animator.start();
 
     }
 
