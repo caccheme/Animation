@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
         AnimatorSet set = new AnimatorSet();
 //        set.playTogether(animatorX, animatorY);
         set.playSequentially(animatorX, animatorY);
+        set.setDuration(3000);
         set.start();
 
     }
