@@ -5,12 +5,14 @@ import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
     private ImageView imageView;
+    private RelativeLayout canvas;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -18,22 +20,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         imageView = findViewById(R.id.faceIcon);
+        canvas = findViewById(R.id.animationCanvas);
     }
 
     public void onButtonClick(View v) {
-        //change x and y size of object simultaneously
-        ObjectAnimator animatorX = ObjectAnimator.ofFloat(imageView,
-                "scaleX", 1f, 2f)
-                .setDuration(1000);
-        ObjectAnimator animatorY = ObjectAnimator.ofFloat(imageView,
-                "scaleY", 1f, 2f)
-                .setDuration(1000);
 
-        AnimatorSet set = new AnimatorSet();
-//        set.playTogether(animatorX, animatorY);
-        set.playSequentially(animatorX, animatorY);
-        set.setDuration(3000);
-        set.start();
 
     }
 

@@ -6,18 +6,24 @@
     android:layout_height="match_parent"
     tools:context="com.example.animation.MainActivity">
 
-    <ImageView
-        android:id="@+id/faceIcon"
-        android:layout_width="@dimen/icon_size"
-        android:layout_height="@dimen/icon_size"
-        android:src="@drawable/ic_face"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        app:tint="@color/colorPrimary"
-        android:contentDescription="@string/face_icon" />
+    <RelativeLayout
+        android:id="@+id/animationCanvas"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/buttonContainer">
+
+        <ImageView
+            android:id="@+id/faceIcon"
+            android:layout_width="@dimen/icon_size"
+            android:layout_height="@dimen/icon_size"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/ic_face"
+            app:tint="@color/colorPrimary"
+            android:contentDescription="@string/face_icon" />
+    </RelativeLayout>
 
     <LinearLayout
-        android:id="@+id/linearLayout"
+        android:id="@+id/buttonContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
