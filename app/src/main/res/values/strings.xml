@@ -8,4 +8,16 @@
     <string name="run_code">Run Code</string>
     <string name="clear">Clear</string>
     <string name="dummy_text">dummy text</string>
+    <string name="floating_action_button">floating action button</string>
+    <string name="clothing_item_name">Clothing item name</string>
+    <string name="_28_00">$28.00</string>
+    <string name="about_headline">About Headline</string>
+    <string name="about_text">About Text</string>
+    <string name="about">About</string>
+    <string name="shopping_cart">Shopping Cart</string>
+    <string name="email">email</string>
+    <string name="product_name">Product name</string>
+    <string name="title_activity_about">About Activity Title</string>
+    <string name="title_activity_detail">Detail Activity Title</string>
+    <string name="jacket">jacket</string>
 </resources>

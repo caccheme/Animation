@@ -1,79 +1,78 @@
 package com.example.animation;
 
-import android.animation.Animator;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
-import android.graphics.Path;
-import android.os.Build;
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.AnticipateOvershootInterpolator;
-import android.view.animation.BounceInterpolator;
-import android.view.animation.LinearInterpolator;
-import android.view.animation.PathInterpolator;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.widget.AdapterView;
+import android.widget.ListView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ImageView imageView;
-    private RelativeLayout canvas;
-    private static final String TAG = "AnimationEvents";
+    private static final int MENU_ITEM_LOGOUT = 1001;
+    public static final String PRODUCT_ID = "PRODUCT_ID";
+    private CoordinatorLayout coordinatorLayout;
+
+    private List<Product> products = DataProvider.productList;
+    private FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        coordinatorLayout = findViewById(R.id.coordinator);
 
-        imageView = findViewById(R.id.faceIcon);
-        canvas = findViewById(R.id.animationCanvas);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        fab = findViewById(R.id.fab);
+
+        ProductListAdapter adapter = new ProductListAdapter(
+                this, R.layout.list_item, products);
+        ListView lv = findViewById(R.id.listView);
+        assert lv != null;
+        lv.setAdapter(adapter);
+        lv.setOnItemClickListener((parent, view, position, id) -> {
+            Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+
+            Product product = products.get(position);
+            intent.putExtra(PRODUCT_ID, product.getProductId());
+
+            startActivity(intent);
+        });
+
     }
 
-    public void onButtonClick(View v) {
-        //set the bottom of the animation, so the bottom of the animation
-        //lands at the bottom of the screen, don't want off the screen
-        int screenHeight = canvas.getHeight();
-        int targetY = screenHeight - imageView.getHeight();
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
 
-        ObjectAnimator animator = ObjectAnimator.ofFloat(
-                imageView, "y", 0, targetY)
-                .setDuration(3000);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            animator.setInterpolator(new BounceInterpolator());
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_about) {
+            startAboutActivity();
+            return true;
         }
 
-        animator.setRepeatCount(2); //means running animation 3 times (original + 2)
-        animator.addUpdateListener(animation -> {
-            //passing a value animator so can find where you are and current value in animation
-            Log.i(TAG, "onAnimationUpdate: " + animation.getAnimatedValue());
-        });
-        animator.addListener(new Animator.AnimatorListener() {
-            @Override
-            public void onAnimationStart(Animator animator) {
-                Log.i(TAG, "onAnimationStart: ");
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animator) {
-                Log.i(TAG, "onAnimationEnd: ");
-            }
-
-            @Override
-            public void onAnimationCancel(Animator animator) {
-
-            }
-
-            @Override
-            public void onAnimationRepeat(Animator animator) {
-
-            }
-        });
-        animator.start();
-
+        return super.onOptionsItemSelected(item);
     }
 
+    private void startAboutActivity() {
+        Intent intent = new Intent(this, AboutActivity.class);
+        startActivity(intent);
+    }
 }
