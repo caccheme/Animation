@@ -48,8 +48,8 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra(PRODUCT_ID, product.getProductId());
 
             startActivity(intent);
-            overridePendingTransition(android.R.anim.fade_in,
-                    android.R.anim.fade_out);
+            overridePendingTransition(R.anim.slide_in_right,
+                    R.anim.slide_out_left);
         });
 
     }
