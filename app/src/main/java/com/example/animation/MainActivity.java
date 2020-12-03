@@ -1,80 +1,62 @@
 package com.example.animation;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final int MENU_ITEM_LOGOUT = 1001;
-    public static final String PRODUCT_ID = "PRODUCT_ID";
-    private CoordinatorLayout coordinatorLayout;
-
-    private List<Product> products = DataProvider.productList;
-    private FloatingActionButton fab;
+    private final List<Product> products = DataProvider.productList;
+    private final int numPages = products.size();
+    private ViewPager mPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        coordinatorLayout = findViewById(R.id.coordinator);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        // Instantiate a ViewPager and a PagerAdapter.
+        mPager = findViewById(R.id.pager);
+        PagerAdapter mPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
 
-        fab = findViewById(R.id.fab);
-
-        ProductListAdapter adapter = new ProductListAdapter(
-                this, R.layout.list_item, products);
-        ListView lv = findViewById(R.id.listView);
-        assert lv != null;
-        lv.setAdapter(adapter);
-        lv.setOnItemClickListener((parent, view, position, id) -> {
-            Intent intent = new Intent(MainActivity.this, DetailActivity.class);
-
-            Product product = products.get(position);
-            intent.putExtra(PRODUCT_ID, product.getProductId());
-
-            startActivity(intent);
-            overridePendingTransition(R.anim.slide_in_right,
-                    R.anim.slide_out_left);
-        });
-
+        mPager.setAdapter(mPagerAdapter);
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+    public void onBackPressed() {
+        if (mPager.getCurrentItem() == 0) {
+            super.onBackPressed();
+        } else {
+            mPager.setCurrentItem(mPager.getCurrentItem() - 1);
+        }
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
+    private class ViewPagerAdapter extends FragmentStatePagerAdapter {
+        private static final String TAG = "Adapter";
 
-        if (id == R.id.action_about) {
-            startAboutActivity();
-            return true;
+        @SuppressWarnings("deprecation")
+        public ViewPagerAdapter(FragmentManager fm) {
+            super(fm);
         }
 
-        return super.onOptionsItemSelected(item);
+        @NonNull
+        @Override
+        public Fragment getItem(int position) {
+            return ItemFragment.create(products.get(position));
+        }
+
+        @Override
+        public int getCount() {
+            return numPages;
+        }
     }
 
-    private void startAboutActivity() {
-        Intent intent = new Intent(this, AboutActivity.class);
-        startActivity(intent);
-    }
 }
