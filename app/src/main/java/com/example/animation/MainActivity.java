@@ -1,66 +1,97 @@
 package com.example.animation;
 
+import android.app.ListFragment;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentStatePagerAdapter;
-import androidx.viewpager.widget.PagerAdapter;
-import androidx.viewpager.widget.ViewPager;
-
-import com.example.animation.transformers.ZoomPageTransformer;
+import androidx.appcompat.widget.Toolbar;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity
+        implements ItemListFragment.ListEventHandler {
 
+    public static final String PRODUCT_ID = "PRODUCT_ID";
     private final List<Product> products = DataProvider.productList;
-    private final int numPages = products.size();
-    private ViewPager mPager;
+    private boolean mShowingAbout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Instantiate a ViewPager and a PagerAdapter.
-        mPager = findViewById(R.id.pager);
-        mPager.setPageTransformer(true, new ZoomPageTransformer());
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        PagerAdapter mPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+//        Display list fragment
+        ListFragment fragment = new ItemListFragment();
+        getFragmentManager().beginTransaction()
+                .add(R.id.fragment_container, fragment).commit();
 
-        mPager.setAdapter(mPagerAdapter);
+//        Display data
+        ProductListAdapter adapter = new ProductListAdapter(
+                this, R.layout.list_item, products);
+        fragment.setListAdapter(adapter);
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_about) {
+            viewAbout();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onListItemClick(int position) {
+        Intent intent = new Intent(MainActivity.this, DetailActivity.class);
+
+        Product product = products.get(position);
+        intent.putExtra(PRODUCT_ID, product.getProductId());
+
+        startActivity(intent);
+    }
+
+    private void viewAbout() {
+
+        if (mShowingAbout) {
+            getFragmentManager().popBackStack();
+            mShowingAbout = false;
+            return;
+        }
+
+
+        AboutFragment aboutFragment = new AboutFragment();
+        getFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_container, aboutFragment)
+                .addToBackStack(null)
+                .commit();
+        mShowingAbout = true;
     }
 
     @Override
     public void onBackPressed() {
-        if (mPager.getCurrentItem() == 0) {
-            super.onBackPressed();
+        if (mShowingAbout) {
+            getFragmentManager().popBackStack();
+            mShowingAbout = false;
         } else {
-            mPager.setCurrentItem(mPager.getCurrentItem() - 1);
+            super.onBackPressed();
         }
     }
-
-    private class ViewPagerAdapter extends FragmentStatePagerAdapter {
-        private static final String TAG = "Adapter";
-
-        @SuppressWarnings("deprecation")
-        public ViewPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @NonNull
-        @Override
-        public Fragment getItem(int position) {
-            return ItemFragment.create(products.get(position));
-        }
-
-        @Override
-        public int getCount() {
-            return numPages;
-        }
-    }
-
 }

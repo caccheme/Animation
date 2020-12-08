@@ -21,23 +21,6 @@ public class ItemFragment extends Fragment {
     private static final String PRODUCT_DESC = "productDesc";
     private static final String PRODUCT_PRICE = "productPrice";
 
-    public static ItemFragment create(Product product) {
-
-        // package data into a bundle
-        Bundle args = new Bundle();
-        args.putString(PRODUCT_ID, product.getProductId());
-        args.putString(PRODUCT_NAME, product.getName());
-        args.putString(PRODUCT_DESC, product.getDescription());
-        args.putDouble(PRODUCT_PRICE, product.getPrice());
-
-//      create the fragment and pass the arguments
-        ItemFragment fragment = new ItemFragment();
-        fragment.setArguments(args);
-
-//      return the fragment
-        return fragment;
-    }
-
     //  required no-args constructor
     public ItemFragment() {
     }

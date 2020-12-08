@@ -2,10 +2,10 @@ package com.example.animation;
 
 public class Product {
 
-    private String productId;
-    private String name;
-    private String description;
-    private double price;
+    private final String productId;
+    private final String name;
+    private final String description;
+    private final double price;
 
     public String getProductId() {
         return productId;
